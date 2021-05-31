@@ -1,15 +1,25 @@
 package sparkTimer.team;
 
 import sparkTimer.athlete.Athlete;
+import sparkTimer.util.CrudEntity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 
-public class Team {
+@Entity
+public class Team extends CrudEntity {
+    @Column(unique = true)
     String name;
     ArrayList<Athlete> members;
 
     public Team(String name) {
         this.name = name;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -22,5 +32,9 @@ public class Team {
 
     public Athlete[] getMembers() {
         return members.toArray(Athlete[]::new);
+    }
+
+    public void removeMember(int id) {
+        members.removeIf((m) -> m.getId() != id );
     }
 }

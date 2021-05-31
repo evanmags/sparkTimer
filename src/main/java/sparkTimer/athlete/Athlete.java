@@ -1,12 +1,16 @@
 package sparkTimer.athlete;
 
+import sparkTimer.util.CrudEntity;
+
 import java.util.Date;
 
-public class Athlete {
-
-    int id;
+public class Athlete extends CrudEntity {
     Name name;
     Date birthdate;
+
+    public int getId() {
+        return id;
+    }
 
     public void setName(String first, String middle, String last) {
         name = new Name(first, middle, last);

@@ -1,32 +1,12 @@
 package sparkTimer.athlete;
 
-import java.util.ArrayList;
+import sparkTimer.util.CrudDao;
 
-public class AthleteDao {
-    ArrayList<Athlete> athletes = new ArrayList<>();
+import javax.persistence.EntityManagerFactory;
+import java.lang.reflect.Type;
 
-    public ArrayList<Athlete> getAthletes() {
-        return athletes;
-    }
-
-    public Athlete getAthleteById(int id) {
-        return athletes.stream()
-                .filter((a) -> a.id == id)
-                .findFirst().orElse(null);
-    }
-
-    public Athlete getAthleteByName(int id) {
-        return athletes.stream()
-                .filter((a) -> a.id == id)
-                .findFirst().orElse(null);
-    }
-
-    public boolean insertAthlete(Athlete a) {
-        return athletes.add(a);
-    }
-
-    public boolean deleteAthlete(int id) {
-        Athlete toRemove = getAthleteById(id);
-        return athletes.remove(toRemove);
+public class AthleteDao extends CrudDao<Athlete> {
+    public AthleteDao(EntityManagerFactory emf, Type entityType) {
+        super(emf, entityType);
     }
 }
