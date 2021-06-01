@@ -6,6 +6,9 @@ import sparkTimer.team.TeamApi;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static spark.Spark.*;
 
 public class Application {
@@ -22,6 +25,10 @@ public class Application {
 
         staticFiles.location("/public");
 
+        get("/", (req, res) -> {
+            String content = Files.readString(Path.of("public/index.html"));
+            return content;
+        });
 
         path("/api", () -> {
             before("*", (request, response) -> {
@@ -58,9 +65,7 @@ public class Application {
                 });
             });
 
-            after((request, response) -> {
-                response.header("Content-Type", "application/json");
-            });
+            after((request, response) -> response.header("Content-Type", "application/json"));
         });
     }
 }
