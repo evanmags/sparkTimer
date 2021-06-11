@@ -1,12 +1,13 @@
 package sparkTimer.entry;
 
+import lombok.EqualsAndHashCode;
 import sparkTimer.athlete.Athlete;
+import sparkTimer.entry.seed.MeasureSeed;
 
-public class FieldEntry extends Entry{
-    float seed;
-
+@EqualsAndHashCode(callSuper = true)
+public class FieldEntry extends Entry<Float>{
     public FieldEntry(Athlete a, float seed) {
-        athlete = a;
-        this.seed = seed;
+        athleteId = a.getId();
+        this.seed = new MeasureSeed(seed);
     }
 }

@@ -1,5 +1,7 @@
 package sparkTimer.meet;
 
+import lombok.Data;
+import sparkTimer.event.Event;
 import sparkTimer.util.CrudEntity;
 
 import javax.persistence.Entity;
@@ -9,15 +11,25 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
+@Data
 public class Meet extends CrudEntity {
     String name;
-    Date startDate; // TODO: this will be come a schedule class
+    Date startDate;
+    Date endDate;
+    Event[] events;
 
     public Meet() {}
 
     public Meet(String name, Date date){
         this.name = name;
         this.startDate = date;
+        this.endDate = date;
+    }
+
+    public Meet(String name, Date startDate, Date endDate){
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Id
@@ -26,19 +38,4 @@ public class Meet extends CrudEntity {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
 }

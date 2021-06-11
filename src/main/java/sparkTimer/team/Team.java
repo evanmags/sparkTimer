@@ -26,6 +26,14 @@ public class Team extends CrudEntity {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMembers(ArrayList<Athlete> members) {
+        this.members = members;
+    }
+
     public boolean addMember(Athlete athlete) {
         return members.add(athlete);
     }

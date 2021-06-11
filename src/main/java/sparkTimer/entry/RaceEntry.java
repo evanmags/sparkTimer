@@ -1,15 +1,20 @@
 package sparkTimer.entry;
 
+import lombok.EqualsAndHashCode;
 import sparkTimer.athlete.Athlete;
+import sparkTimer.entry.seed.TimeSeed;
 
 import java.time.Duration;
 
-public class RaceEntry extends Entry{
-    Duration seed;
-
+@EqualsAndHashCode(callSuper = false)
+public class RaceEntry extends Entry<Duration> {
     public RaceEntry(Athlete a, String seedTime) {
-        athlete = a;
-        parseDurationStamp(normalizeSeed(seedTime));
+        athleteId = a.getId();
+        seed = new TimeSeed(
+            parseDurationStamp(
+                    normalizeSeed(seedTime)
+            )
+        );
     }
 
     private String normalizeSeed(String seed) {
@@ -24,13 +29,15 @@ public class RaceEntry extends Entry{
            return seed;
     }
 
-    private void parseDurationStamp(String seedTime) {
+    private Duration parseDurationStamp(String seedTime) {
         String[] values = seedTime.split("\\.");
-        seed = Duration.ofMillis(Integer.parseInt(values[1]));
+        Duration tmpSeed = Duration.ofMillis(Integer.parseInt(values[1]));
 
         values = values[0].split(":");
-        seed = seed.plusHours(Integer.parseInt(values[0]));
-        seed = seed.plusHours(Integer.parseInt(values[1]));
-        seed = seed.plusHours(Integer.parseInt(values[2]));
+        tmpSeed = tmpSeed.plusHours(Integer.parseInt(values[0]));
+        tmpSeed = tmpSeed.plusHours(Integer.parseInt(values[1]));
+        tmpSeed = tmpSeed.plusHours(Integer.parseInt(values[2]));
+
+        return tmpSeed;
     }
 }

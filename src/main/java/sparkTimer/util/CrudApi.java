@@ -13,14 +13,16 @@ import java.util.List;
 
 public abstract class CrudApi<T> {
         protected static Gson gson = new Gson();
-        protected CrudDao dao;
+        protected CrudDao<T> dao;
         protected Type entityType;
 
         public CrudApi(EntityManagerFactory emf, Type entityType) {
             this.entityType = entityType;
             try {
-                Class cls = Class.forName(String.format("%sDao", entityType.getTypeName()));
-                dao = (CrudDao<T>) cls.getDeclaredConstructor(EntityManagerFactory.class, Type.class)
+                Class<CrudDao<T>> cls = (Class<CrudDao<T>>) Class.forName(
+                        String.format("%sDao", entityType.getTypeName())
+                );
+                dao = cls.getDeclaredConstructor(EntityManagerFactory.class, Type.class)
                         .newInstance(emf, entityType);
             } catch (ClassNotFoundException |
                     NoSuchMethodException |
@@ -43,7 +45,7 @@ public abstract class CrudApi<T> {
             if (body.equals("")) {
                 response.status(HttpServletResponse.SC_NOT_ACCEPTABLE);
             }
-            T entity = (T) dao.create(gson.fromJson(request.body(), entityType));
+            T entity = dao.create(gson.fromJson(request.body(), entityType));
             return gson.toJson(entity);
         };
 
@@ -61,13 +63,13 @@ public abstract class CrudApi<T> {
             }
             CrudEntity mergeEntity = gson.fromJson(request.body(), entityType);
             mergeEntity.setId(id);
-            Object entity = dao.update(mergeEntity);
+            T entity = dao.update((T) mergeEntity);
             return gson.toJson(entity);
         };
 
         public Route delete = (Request request, Response response) -> {
             int deleteId = Integer.parseInt(request.params(":id"));
-            Object entity = dao.get(deleteId);
+            T entity = dao.get(deleteId);
             dao.delete(entity);
             response.status(HttpServletResponse.SC_NO_CONTENT);
             return "";

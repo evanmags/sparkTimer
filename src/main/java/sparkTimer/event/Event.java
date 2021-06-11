@@ -1,34 +1,19 @@
 package sparkTimer.event;
 
-import sparkTimer.athlete.Athlete;
+import lombok.Data;
 import sparkTimer.entry.Entry;
-import sparkTimer.entry.FieldEntry;
-import sparkTimer.entry.RaceEntry;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Event {
+@Data
+public class Event<T> {
     String title;
-    ArrayList<Entry> entries =  new ArrayList<>();
+    ArrayList<Entry<T>> entries =  new ArrayList<>();
     EventStatus status;
 
-    protected enum Unit {
-        MILE,
-        METER
+    public void sortEntries() {
+        Collections.sort((List) entries);
     }
-
-    public void enterAthlete(Athlete a, float seed) {
-        FieldEntry entry = new FieldEntry(a, seed);
-        entries.add(entry);
-    }
-
-    public void enterAthlete(Athlete a, String seed) {
-        RaceEntry entry = new RaceEntry(a, seed);
-        entries.add(entry);
-    }
-
-    public void scratchEntry(){}
-    public void startEvent(){}
-    public void scoreEvent(){}
-
 }

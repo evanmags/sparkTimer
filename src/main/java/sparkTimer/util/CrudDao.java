@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class CrudDao<T> {
     protected EntityManagerFactory entityManagerFactory;
     protected String entityTypeName;
-    protected Class entityClass;
+    protected Class<?> entityClass;
 
     public CrudDao(EntityManagerFactory emf, Type entityType) {
         this.entityManagerFactory = emf;
@@ -42,7 +42,7 @@ public abstract class CrudDao<T> {
 
     public List<T> get() {
         EntityManager entityManager = getEntityManager();
-        List meetList = entityManager.createQuery(
+        List<T> meetList = (List<T>) entityManager.createQuery(
                 String.format("from %s", entityTypeName), entityClass
         ).getResultList();
         returnEntityManager(entityManager);
